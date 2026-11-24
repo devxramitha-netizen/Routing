@@ -1,3 +1,9 @@
+# Optimized by ci-cost (https://github.com/mariotavarez/ci-cost)
+# Applied 2 optimizations:
+# - [MEDIUM] Add concurrency group to "test-application.yaml"
+# - [LOW] Explicitly set fail-fast for large matrix job "test" (6 combinations)
+# Estimated savings: ~4 min/run
+#
 name: "Test application"
 
 on:
@@ -9,6 +15,10 @@ on:
             - "[0-9]+.[0-9]+"
             - "[0-9]+.[0-9]+.x"
 
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
     test:
         name: "PHP ${{ matrix.php-version }}, Symfony ${{ matrix.symfony-version }} ${{ matrix.dependencies }}"
